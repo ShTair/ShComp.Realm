@@ -44,5 +44,6 @@ public sealed class RealmSynchronizationContext : SynchronizationContext, IDispo
     public void Dispose()
     {
         _cts.Cancel();
+        _q.Dispose();
     }
 }
