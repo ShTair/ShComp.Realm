@@ -2,7 +2,10 @@
 
 namespace ShComp.Realms;
 
-public sealed class RealmSynchronizationContext : SynchronizationContext, IDisposable
+/// <summary>
+/// 単一のスレッドで処理を実行する同期コンテキストです。
+/// </summary>
+internal sealed class RealmSynchronizationContext : SynchronizationContext, IDisposable
 {
     private readonly CancellationTokenSource _cts;
     private readonly BlockingCollection<(SendOrPostCallback, object?)> _q;

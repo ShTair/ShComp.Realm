@@ -2,6 +2,9 @@
 
 namespace ShComp.Realms;
 
+/// <summary>
+/// Realmの処理を同じスレッドで行うための方法を提供します。
+/// </summary>
 public sealed class RealmContext : IDisposable
 {
     private readonly RealmSynchronizationContext _syncContext;
@@ -19,6 +22,11 @@ public sealed class RealmContext : IDisposable
         _realm?.Dispose();
     }
 
+    /// <summary>
+    /// 指定したRealmの非同期処理を、Realmを生成したスレッドと同じスレッドで実行します。<br />
+    /// 同期コンテキストにより、処理でawaitを使用できます。
+    /// </summary>
+    /// <param name="func">Realmの非同期処理</param>
     public Task InvokeAsync(Func<Realm, Task> func)
     {
         var tcs = new TaskCompletionSource();
@@ -32,6 +40,11 @@ public sealed class RealmContext : IDisposable
         return tcs.Task;
     }
 
+    /// <summary>
+    /// 指定したRealmの非同期処理を、Realmを生成したスレッドと同じスレッドで実行します。<br />
+    /// 同期コンテキストにより、処理でawaitを使用できます。
+    /// </summary>
+    /// <param name="func">Realmの非同期処理</param>
     public Task<T> InvokeAsync<T>(Func<Realm, Task<T>> func)
     {
         var tcs = new TaskCompletionSource<T>();
@@ -45,6 +58,10 @@ public sealed class RealmContext : IDisposable
         return tcs.Task;
     }
 
+    /// <summary>
+    /// 指定したRealmの処理を、Realmを生成したスレッドと同じスレッドで実行します。
+    /// </summary>
+    /// <param name="func">Realmの処理</param>
     public Task InvokeAsync(Action<Realm> func)
     {
         var tcs = new TaskCompletionSource();
@@ -58,6 +75,10 @@ public sealed class RealmContext : IDisposable
         return tcs.Task;
     }
 
+    /// <summary>
+    /// 指定したRealmの処理を、Realmを生成したスレッドと同じスレッドで実行します。
+    /// </summary>
+    /// <param name="func">Realmの処理</param>
     public Task<T> InvokeAsync<T>(Func<Realm, T> func)
     {
         var tcs = new TaskCompletionSource<T>();
